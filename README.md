@@ -9,4 +9,3 @@
 * Webpack
 * React
 
-### Ссылка на сайт: https://olegolegsy.github.io/mesto-react/
