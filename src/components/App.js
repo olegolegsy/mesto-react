@@ -59,6 +59,7 @@ function App() {
         onClose={closeAllPopups}
       >
         <input
+          placeholder="Имя"
           type="text"
           className="popup__input popup__input_type_name"
           name="name"
@@ -68,6 +69,7 @@ function App() {
         />
         <span className="popup__input-error name-error" />
         <input
+          placeholder="Чем вы занимаетесь?"
           type="text"
           className="popup__input popup__input_type_about"
           name="about"
@@ -113,6 +115,7 @@ function App() {
         onClose={closeAllPopups}
       >
         <input
+          placeholder="Ссылка на картинку"
           type="url"
           className="popup__input popup__input_type_avatar"
           name="avatar"
