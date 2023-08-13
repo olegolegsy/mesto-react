@@ -3,7 +3,10 @@ function PopupWithForm({ name, title, button, children, isOpen, onClose }) {
     <section
       className={`popup popup_type_${name} ${isOpen ? "popup_opened" : ""}`}
     >
-      <div className="popup__container">
+      <div
+        className="popup__container"
+        onClick={(evt) => evt.stopPropagation()}
+      >
         <button
           type="button"
           className="popup__cls-btn popup__cls-btn_type_profile"

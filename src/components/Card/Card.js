@@ -1,11 +1,11 @@
-function Card({ card, onCardClick }) {
+function Card({ card, onCardClick, onDelete }) {
   const handleClick = () => {
     onCardClick(card);
   };
 
   return (
     <article className="element">
-      <button type="button" className="element__delete" />
+      <button type="button" className="element__delete" onClick={onDelete} />
       <img
         src={card.link}
         alt={card.name}

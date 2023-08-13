@@ -3,7 +3,10 @@ function ImagePopup({ card, isOpen, onClose }) {
     <section
       className={`popup popup_type_image ${isOpen ? "popup_opened" : ""}`}
     >
-      <div className="popup__image-content">
+      <div
+        className="popup__image-content"
+        onClick={(evt) => evt.stopPropagation()}
+      >
         <button
           type="button"
           className="popup__cls-btn popup__cls-btn_type_image"

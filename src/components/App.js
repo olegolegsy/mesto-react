@@ -4,40 +4,74 @@ import Footer from "./Footer/Footer";
 import PopupWithForm from "./PopupWithForm/PopupWithForm";
 import ImagePopup from "./ImagePopup/ImagePopup";
 
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 function App() {
-  function handleEditAvatarClick() {
+  // ================================================================== handle funcs ==================================================================
+  const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
-  }
+    setEventListeners();
+  };
 
-  function handleEditProfileClick() {
+  const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
-  }
+    setEventListeners();
+  };
 
-  function handleAddPlaceClick() {
+  const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
-  }
+    setEventListeners();
+  };
 
-  function handleCardClick(card) {
+  const handleCardClick = (card) => {
     setSelectedCard(card);
     setIsImagePopupOpen(true);
-  }
+    setEventListeners();
+  };
 
-  function closeAllPopups() {
+  const handleConfirmClick = () => {
+    setIsConfirmPopupOpen(true);
+    setEventListeners();
+  };
+
+  const setPopupStates = useCallback(() => {
     setIsEditAvatarPopupOpen(false);
     setIsEditProfilePopupOpen(false);
     setIsAddPlacePopupOpen(false);
     setIsImagePopupOpen(false);
-  }
+    setIsConfirmPopupOpen(false);
+  }, []);
 
+  // ================================================================== states ==================================================================
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
   const [selectedCard, setSelectedCard] = useState({});
 
+  // ================================================================== listeners ==================================================================
+  const handleKeydownEsc = useCallback(
+    (evt) => {
+      if (evt.key === "Escape") {
+        setPopupStates();
+        document.removeEventListener("keydown", handleKeydownEsc);
+      }
+    },
+    [setPopupStates]
+  );
+
+  const setEventListeners = () => {
+    document.addEventListener("keydown", handleKeydownEsc);
+  };
+
+  const closeAllPopups = useCallback(() => {
+    setPopupStates();
+    document.removeEventListener("keydown", handleKeydownEsc);
+  }, [setPopupStates, handleKeydownEsc]);
+
+  // ================================================================== component ==================================================================
   return (
     <div className="page__content">
       <Header />
@@ -47,10 +81,12 @@ function App() {
         onAddPlace={handleAddPlaceClick}
         onEditProfile={handleEditProfileClick}
         onCardClick={handleCardClick}
+        onConfirm={handleConfirmClick}
       ></Main>
 
       <Footer />
 
+      {/* ================================== profile ================================== */}
       <PopupWithForm
         name="profile"
         title="Редактировать профиль"
@@ -80,6 +116,7 @@ function App() {
         <span className="popup__input-error about-error" />
       </PopupWithForm>
 
+      {/* ================================== place ================================== */}
       <PopupWithForm
         name="place"
         title="Новое место"
@@ -107,6 +144,7 @@ function App() {
         <span className="popup__input-error link-error" />
       </PopupWithForm>
 
+      {/* ================================== avatar ================================== */}
       <PopupWithForm
         name="avatar"
         title="Обновить аватар"
@@ -124,12 +162,16 @@ function App() {
         <span className="popup__input-error avatar-error" />
       </PopupWithForm>
 
+      {/* ================================== confirm ================================== */}
       <PopupWithForm
         name="confirm"
         title="Вы уверены?"
         button="Да"
+        isOpen={isConfirmPopupOpen}
+        onClose={closeAllPopups}
       ></PopupWithForm>
 
+      {/* ================================== image ================================== */}
       <ImagePopup
         card={selectedCard}
         isOpen={isImagePopupOpen}

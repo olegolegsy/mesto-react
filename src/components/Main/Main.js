@@ -4,7 +4,13 @@ import api from "../../utils/Api";
 
 import Card from "../Card/Card";
 
-function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick }) {
+function Main({
+  onEditAvatar,
+  onAddPlace,
+  onEditProfile,
+  onCardClick,
+  onConfirm,
+}) {
   const [userName, setUserName] = useState("");
   const [userDescription, setUserDescription] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
@@ -59,7 +65,12 @@ function Main({ onEditAvatar, onAddPlace, onEditProfile, onCardClick }) {
       <section className="elements">
         {cards.map((card) => {
           return (
-            <Card key={card._id} card={card} onCardClick={onCardClick}></Card>
+            <Card
+              key={card._id}
+              card={card}
+              onCardClick={onCardClick}
+              onDelete={onConfirm}
+            ></Card>
           );
         })}
       </section>
