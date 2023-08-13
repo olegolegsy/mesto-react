@@ -2,6 +2,7 @@ function ImagePopup({ card, isOpen, onClose }) {
   return (
     <section
       className={`popup popup_type_image ${isOpen ? "popup_opened" : ""}`}
+      onClick={onClose}
     >
       <div
         className="popup__image-content"
