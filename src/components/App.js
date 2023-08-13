@@ -11,30 +11,36 @@ import { useCallback, useState, useEffect } from "react";
 
 function App() {
   // ================================================================== handle funcs ==================================================================
+  //edit avatar
   const handleEditAvatarClick = () => {
     setIsEditAvatarPopupOpen(true);
     setEventListeners();
   };
 
+  //edit prof
   const handleEditProfileClick = () => {
     setIsEditProfilePopupOpen(true);
     setEventListeners();
   };
 
+  //add place
   const handleAddPlaceClick = () => {
     setIsAddPlacePopupOpen(true);
     setEventListeners();
   };
 
+  //image
   const handleCardClick = (card) => {
     setSelectedCard(card);
     setIsImagePopupOpen(true);
     setEventListeners();
   };
 
-  const handleConfirmClick = () => {
+  //confirm
+  const handleConfirmClick = (idCard) => {
     setIsConfirmPopupOpen(true);
     setEventListeners();
+    setDelCardId(idCard);
   };
 
   const setPopupStates = useCallback(() => {
@@ -55,6 +61,21 @@ function App() {
       .catch((err) => console.error(`Ошибка: ${err}`));
   }, []);
 
+  const handleConfirmSubmit = (evt) => {
+    evt.preventDefault();
+    api
+      .removeCard(delCardId)
+      .then(() => {
+        setCards(
+          cards.filter((card) => {
+            return card._id !== delCardId;
+          })
+        );
+        closeAllPopups();
+      })
+      .catch((err) => console.error(err));
+  };
+
   // ================================================================== states ==================================================================
   const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
@@ -62,8 +83,10 @@ function App() {
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
   const [isConfirmPopupOpen, setIsConfirmPopupOpen] = useState(false);
 
+  // card
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({});
+  const [delCardId, setDelCardId] = useState("");
 
   const [currentUser, setCurrentUser] = useState({});
 
@@ -187,6 +210,7 @@ function App() {
           button="Да"
           isOpen={isConfirmPopupOpen}
           onClose={closeAllPopups}
+          onSubmit={handleConfirmSubmit}
         ></PopupWithForm>
 
         {/* ================================== image ================================== */}
