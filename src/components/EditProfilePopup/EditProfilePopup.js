@@ -3,7 +3,8 @@ import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import useValidation from "../hooks/useValidation";
 import CurrentUserContext from "../contexts/CurrentUserContext";
 
-const EditProfilePopup = ({ isOpen, onClose }) => {
+const EditProfilePopup = ({ isOpen, onClose, onUpdateUser }) => {
+  // ================================================================== hooks ==================================================================
   const {
     handleChange,
     reset,
@@ -26,6 +27,11 @@ const EditProfilePopup = ({ isOpen, onClose }) => {
     reset({ name: currentUser.name, about: currentUser.about });
   };
 
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    onUpdateUser({ name: value.name, about: value.about }, reset);
+  };
+
   // ================================================================== component ==================================================================
   return (
     <PopupWithForm
@@ -35,6 +41,7 @@ const EditProfilePopup = ({ isOpen, onClose }) => {
       isOpen={isOpen}
       onClose={handleClose}
       isValid={isValid}
+      onSubmit={handleSubmit}
     >
       <input
         placeholder="Имя"

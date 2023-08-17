@@ -5,6 +5,8 @@ import PopupWithForm from "./PopupWithForm/PopupWithForm";
 import ImagePopup from "./ImagePopup/ImagePopup";
 
 import EditProfilePopup from "./EditProfilePopup/EditProfilePopup";
+import EditAvatarPopup from "./EditAvatarPopup/EditAvatarPopup";
+import AddPlacePopup from "./AddPlacePopup/AddPlacePopup";
 
 import CurrentUserContext from "./contexts/CurrentUserContext";
 import api from "../utils/Api";
@@ -63,6 +65,28 @@ function App() {
       .catch((err) => console.error(`Ошибка: ${err}`));
   }, []);
 
+  const handleUpdateUser = (userData, handleReset) => {
+    api
+      .setUserInfo(userData)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+        handleReset();
+      })
+      .catch((err) => console.error(`Ошибка: ${err}`));
+  };
+
+  const handleUpdateAvatar = (userData, handleReset) => {
+    api
+      .setAvatar(userData)
+      .then((res) => {
+        setCurrentUser(res);
+        closeAllPopups();
+        handleReset();
+      })
+      .catch((err) => console.error(`Ошибка: ${err}`));
+  };
+
   const handleConfirmSubmit = (evt) => {
     evt.preventDefault();
     api
@@ -76,6 +100,17 @@ function App() {
         closeAllPopups();
       })
       .catch((err) => console.error(err));
+  };
+
+  const handleAddPlaceSubmit = (cardData, reset) => {
+    api
+      .setCard(cardData)
+      .then((res) => {
+        setCards([res, ...cards]);
+        closeAllPopups();
+        reset();
+      })
+      .catch((err) => console.error(`Ошибка: ${err}`));
   };
 
   // ================================================================== states ==================================================================
@@ -133,54 +168,22 @@ function App() {
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
+          onUpdateUser={handleUpdateUser}
         />
 
         {/* ================================== place ================================== */}
-        <PopupWithForm
-          name="place"
-          title="Новое место"
-          button="Создать"
+        <AddPlacePopup
           isOpen={isAddPlacePopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            placeholder="Название"
-            type="text"
-            className="popup__input popup__input_type_title"
-            name="title"
-            minLength={2}
-            maxLength={30}
-            required=""
-          />
-          <span className="popup__input-error title-error" />
-          <input
-            placeholder="Ссылка на картинку"
-            type="url"
-            className="popup__input popup__input_type_link"
-            name="link"
-            required=""
-          />
-          <span className="popup__input-error link-error" />
-        </PopupWithForm>
+          onAddPlace={handleAddPlaceSubmit}
+        />
 
         {/* ================================== avatar ================================== */}
-        <PopupWithForm
-          name="avatar"
-          title="Обновить аватар"
-          button="Сохранить"
+        <EditAvatarPopup
+          onUpdateAvatar={handleUpdateAvatar}
           isOpen={isEditAvatarPopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            placeholder="Ссылка на картинку"
-            type="url"
-            className="popup__input popup__input_type_avatar"
-            name="avatar"
-            required=""
-          />
-          <span className="popup__input-error avatar-error" />
-        </PopupWithForm>
-
+        />
         {/* ================================== confirm ================================== */}
         <PopupWithForm
           name="confirm"
