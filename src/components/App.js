@@ -4,6 +4,8 @@ import Footer from "./Footer/Footer";
 import PopupWithForm from "./PopupWithForm/PopupWithForm";
 import ImagePopup from "./ImagePopup/ImagePopup";
 
+import EditProfilePopup from "./EditProfilePopup/EditProfilePopup";
+
 import CurrentUserContext from "./contexts/CurrentUserContext";
 import api from "../utils/Api";
 
@@ -128,34 +130,10 @@ function App() {
         <Footer />
 
         {/* ================================== profile ================================== */}
-        <PopupWithForm
-          name="profile"
-          title="Редактировать профиль"
-          button="Сохранить"
+        <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
           onClose={closeAllPopups}
-        >
-          <input
-            placeholder="Имя"
-            type="text"
-            className="popup__input popup__input_type_name"
-            name="name"
-            minLength={2}
-            maxLength={40}
-            required=""
-          />
-          <span className="popup__input-error name-error" />
-          <input
-            placeholder="Чем вы занимаетесь?"
-            type="text"
-            className="popup__input popup__input_type_about"
-            name="about"
-            minLength={2}
-            maxLength={200}
-            required=""
-          />
-          <span className="popup__input-error about-error" />
-        </PopupWithForm>
+        />
 
         {/* ================================== place ================================== */}
         <PopupWithForm
