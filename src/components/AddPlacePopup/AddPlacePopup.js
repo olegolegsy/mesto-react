@@ -1,17 +1,9 @@
-import { useContext, useEffect } from "react";
 import PopupWithForm from "../PopupWithForm/PopupWithForm";
 import useValidation from "../hooks/useValidation";
 
 const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
-  const {
-    handleChange,
-    reset,
-    setValues,
-    value,
-    error,
-    isValid,
-    isInputValid,
-  } = useValidation();
+  const { handleChange, reset, value, error, isValid, isInputValid } =
+    useValidation();
 
   const handleClose = () => {
     onClose();
@@ -20,7 +12,7 @@ const AddPlacePopup = ({ isOpen, onClose, onAddPlace }) => {
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    onAddPlace({ title: value.title, link: value.link });
+    onAddPlace({ title: value.title, link: value.link }, reset);
   };
 
   // ================================================================== component ==================================================================
